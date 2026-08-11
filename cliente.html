@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resultado da Consulta</title>
+
+    <link rel="stylesheet" href="css/cliente.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <section class="card">
+
+            <button type="button" id="btn-voltar" class="btn-voltar">
+                ← Voltar
+            </button>
+
+            <header class="header">
+
+                <h1>Resultado da Consulta</h1>
+
+                <p>
+                    Confira os lançamentos encontrados
+                </p>
+
+            </header>
+
+            <section class="client-info">
+
+                <span class="label">
+                    CLIENTE
+                </span>
+
+                <h2 id="nome-cliente">
+                    Empresa Alpha Ltda
+                </h2>
+
+                <div class="search-info">
+
+                    <span id="tipo-pesquisa">
+                        Pesquisa realizada por CNPJ
+                    </span>
+
+                    <strong id="valor-pesquisa">
+                        12.345.678/0001-95
+                    </strong>
+
+                </div>
+
+            </section>
+
+            <div class="results-header">
+
+                <h3>
+                    Lançamentos encontrados
+                </h3>
+
+                <span id="quantidade-resultados">
+                    0 registros
+                </span>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Nº NF</th>
+                            <th>Data Lançamento</th>
+                            <th>Data Vencimento</th>
+                            <th>Data Pagamento</th>
+                            <th>Histórico</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabela-resultados">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="js/cliente.js"></script>
+
+</body>
+
+</html>

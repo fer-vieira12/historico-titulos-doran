@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Consulta de Cliente</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <section class="card">
+
+            <h1>Consulta de Cliente</h1>
+
+            <p class="subtitle">
+                Consulte um cliente através do CNPJ ou ID do cliente
+            </p>
+
+            <div class="field">
+
+                <label for="cnpj">CNPJ</label>
+
+                <input
+                    type="text"
+                    id="cnpj"
+                    name="cnpj"
+                    placeholder="00.000.000/0000-00"
+                    maxlength="18"
+                >
+
+            </div>
+
+            <div class="divider">
+                <span>ou</span>
+            </div>
+
+            <div class="field">
+
+                <label for="cliente-id">ID do Cliente</label>
+
+                <input
+                    type="text"
+                    id="cliente-id"
+                    name="cliente-id"
+                    placeholder="Digite o ID do cliente"
+                >
+
+            </div>
+
+            <button type="button" id="btn-buscar">
+                Buscar
+            </button>
+
+        </section>
+
+    </main>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
