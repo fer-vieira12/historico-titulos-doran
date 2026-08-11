@@ -97,3 +97,5 @@ botaoBuscar.addEventListener("click", function () {
     // caso nenhum campo tenha sido preenchido.
 
 });
+
+//teste
