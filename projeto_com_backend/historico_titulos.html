@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Consulta de Cliente</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f4f6f8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .container.resultado {
+            max-width: 1200px;
+        }
+
+        .card {
+            background-color: #ffffff;
+
+            padding: 40px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h1 {
+            text-align: center;
+
+            color: #1f2937;
+
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+
+            color: #6b7280;
+
+            margin-bottom: 30px;
+
+            line-height: 1.5;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+
+            font-weight: 600;
+        }
+
+        .field input {
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+        .field input:focus {
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            margin: 5px 0 20px;
+
+            color: #9ca3af;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background-color: #e5e7eb;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #9370DB 0%, #8B5FBF 100%);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(147, 112, 219, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, #8B5FBF 0%, #7A4DAE 100%);
+            box-shadow: 0 6px 20px rgba(147, 112, 219, 0.4);
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* ESTILOS DE RESULTADO */
+
+        .btn-voltar {
+            border: none;
+
+            background: transparent;
+
+            color: #2563eb;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            padding: 0;
+
+            margin-bottom: 25px;
+        }
+
+        .btn-voltar:hover {
+            color: #1d4ed8;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1f2937;
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+
+            line-height: 1.5;
+        }
+
+        .client-info {
+            background-color: #f8fafc;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .label {
+            display: block;
+
+            color: #6b7280;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 8px;
+        }
+
+        .client-info h2 {
+            color: #1f2937;
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+        }
+
+        .search-info {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+        .search-info span {
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .search-info strong {
+            color: #374151;
+
+            font-size: 15px;
+        }
+
+        .results-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 15px;
+        }
+
+        .results-header h3 {
+            color: #1f2937;
+
+            font-size: 18px;
+        }
+
+        .results-header span {
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+        .table-container {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 850px;
+
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #2563eb;
+        }
+
+        th {
+            color: #ffffff;
+
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            color: #374151;
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* SEÇÕES */
+        .secao {
+            display: none;
+        }
+
+        .secao.ativa {
+            display: block;
+        }
+
+        .erro {
+            background-color: #fee2e2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #fca5a5;
+        }
+
+        .carregando {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+        }
+
+        /* Responsividade */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 10px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .client-info h2 {
+                font-size: 20px;
+            }
+
+            .results-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 5px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .container.resultado {
+                max-width: 100%;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container secao {% if records or erro %}{% else %}ativa{% endif %}" id="secao-busca">
+
+        <section class="card">
+
+            <h1>Consulta de Cliente</h1>
+
+            <p class="subtitle">
+                Consulte um cliente através do CNPJ ou ID do cliente
+            </p>
+
+            <form id="form-busca" method="POST" action="/historico_titulos/">
+                {% csrf_token %}
+
+                <div class="field">
+
+                    <label for="cnpj">CNPJ</label>
+
+                    <input
+                        type="text"
+                        id="cnpj"
+                        name="cnpj"
+                        placeholder="00.000.000/0000-00"
+                        maxlength="18"
+                        value="{{ cnpj }}"
+                    >
+
+                </div>
+
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+
+                <div class="field">
+
+                    <label for="cliente-id">ID do Cliente</label>
+
+                    <input
+                        type="text"
+                        id="cliente-id"
+                        name="cliente-id"
+                        placeholder="Digite o ID do cliente"
+                        value="{{ id_cliente }}"
+                    >
+
+                </div>
+
+                <button type="submit" name="submit">Buscar</button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <main class="container resultado secao {% if records or erro %}ativa{% endif %}" id="secao-resultado">
+
+        <section class="card">
+
+            <button type="button" id="btn-voltar" class="btn-voltar">
+                ← Voltar
+            </button>
+
+            <header class="header">
+
+                <h1>Resultado da Consulta</h1>
+
+                <p>
+                    Confira os lançamentos encontrados
+                </p>
+
+            </header>
+
+            <div id="erro-container">
+                {% if erro %}
+                    <div class="erro">{{ erro }}</div>
+                {% endif %}
+            </div>
+
+            <section class="client-info">
+
+                <span class="label">
+                    CLIENTE
+                </span>
+
+                <h2 id="nome-cliente">
+                    {% if records %}
+                        {{ records.0.nomefantasia_cliente }}
+                    {% else %}
+                        Carregando...
+                    {% endif %}
+                </h2>
+
+                <div class="search-info">
+
+                    <span id="tipo-pesquisa">
+                        {% if cnpj %}
+                            Pesquisa realizada por CNPJ
+                        {% elif id_cliente %}
+                            Pesquisa realizada por ID do Cliente
+                        {% else %}
+                            -
+                        {% endif %}
+                    </span>
+
+                    <strong id="valor-pesquisa">
+                        {% if cnpj %}
+                            {{ cnpj }}
+                        {% elif id_cliente %}
+                            {{ id_cliente }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+            </section>
+
+            <div class="results-header">
+
+                <h3>
+                    Lançamentos encontrados
+                </h3>
+
+                <span id="quantidade-resultados">
+                    {% if records %}
+                        {{ records|length }} {% if records|length == 1 %}registro{% else %}registros{% endif %}
+                    {% else %}
+                        0 registros
+                    {% endif %}
+                </span>
+
+            </div>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Nº NF</th>
+                            <th>Data Lançamento</th>
+                            <th>Data Vencimento</th>
+                            <th>Data Pagamento</th>
+                            <th>Histórico</th>
+                            <th>Valor Total</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tabela-resultados">
+                        {% if records %}
+                            {% for record in records %}
+                                <tr>
+                                    <td>{{ record.numero_nf_saida|default:"-" }}</td>
+                                    <td>
+                                        {% if record.data_lancamento %}
+                                            {{ record.data_lancamento|date:"d/m/Y" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if record.data_vencimento %}
+                                            {{ record.data_vencimento|date:"d/m/Y" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if record.data_pagamento %}
+                                            {{ record.data_pagamento|date:"d/m/Y" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ record.historico|default:"-" }}</td>
+                                    <td>{{ record.valor_total|default:"-" }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #6b7280;">
+                                    {% if erro %}
+                                        Nenhum resultado encontrado
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const campoCnpj = document.getElementById("cnpj");
+        const formBusca = document.getElementById("form-busca");
+        const btnVoltar = document.getElementById("btn-voltar");
+        const secaoBusca = document.getElementById("secao-busca");
+        const secaoResultado = document.getElementById("secao-resultado");
+
+        // --------------------------------------------------
+        // MÁSCARA DO CNPJ
+        // --------------------------------------------------
+
+        campoCnpj.addEventListener("input", function () {
+
+            let valor = campoCnpj.value;
+
+            // Remove tudo que não for número
+            valor = valor.replace(/\D/g, "");
+
+            // Limita o CNPJ a 14 números
+            valor = valor.slice(0, 14);
+
+            // Aplica a máscara progressivamente
+            if (valor.length > 12) {
+
+                valor = valor.replace(
+                    /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
+                    "$1.$2.$3/$4-$5"
+                );
+
+            } else if (valor.length > 8) {
+
+                valor = valor.replace(
+                    /^(\d{2})(\d{3})(\d{3})(\d{0,4}).*/,
+                    "$1.$2.$3/$4"
+                );
+
+            } else if (valor.length > 5) {
+
+                valor = valor.replace(
+                    /^(\d{2})(\d{3})(\d{0,3}).*/,
+                    "$1.$2.$3"
+                );
+
+            } else if (valor.length > 2) {
+
+                valor = valor.replace(
+                    /^(\d{2})(\d{0,3}).*/,
+                    "$1.$2"
+                );
+            }
+
+            // Atualiza o campo
+            campoCnpj.value = valor;
+
+        });
+
+
+        // --------------------------------------------------
+        // BOTÃO BUSCAR
+        // --------------------------------------------------
+
+        formBusca.addEventListener("submit", function (event) {
+            const campoId = document.getElementById("cliente-id");
+            const cnpj = campoCnpj.value.trim();
+            const idCliente = campoId.value.trim();
+
+            // Validação
+            if (cnpj === "" && idCliente === "") {
+                event.preventDefault();
+                mostrarErro("Por favor, preencha o CNPJ ou o ID do cliente");
+                return;
+            }
+
+            // Permitir submit normal para ir para a view
+        });
+
+        // --------------------------------------------------
+        // BOTÃO VOLTAR
+        // --------------------------------------------------
+
+        btnVoltar.addEventListener("click", function () {
+            secaoBusca.classList.add("ativa");
+            secaoResultado.classList.remove("ativa");
+
+            // Limpar formulário
+            campoCnpj.value = "";
+            document.getElementById("cliente-id").value = "";
+            document.getElementById("erro-container").innerHTML = "";
+        });
+
+        // --------------------------------------------------
+        // FUNÇÕES AUXILIARES
+        // --------------------------------------------------
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function mostrarErro(mensagem) {
+            const container = document.getElementById("erro-container");
+            container.innerHTML = `<div class="erro">${mensagem}</div>`;
+            secaoBusca.classList.add("ativa");
+            secaoResultado.classList.remove("ativa");
+        }
+
+        function exibirResultados(dados, cnpj, idCliente) {
+            // Exibir informações do cliente
+            const nomeCliente = dados[0]?.NOMEFANTASIA_CLIENTE || "Não informado";
+            document.getElementById("nome-cliente").textContent = nomeCliente;
+
+            // Tipo de pesquisa
+            const tipoPesquisa = cnpj ? "CNPJ" : "ID do Cliente";
+            const valorPesquisa = cnpj || idCliente;
+
+            document.getElementById("tipo-pesquisa").textContent = `Pesquisa realizada por ${tipoPesquisa}`;
+            document.getElementById("valor-pesquisa").textContent = valorPesquisa;
+
+            // Quantidade de resultados
+            const quantidade = dados.length;
+            document.getElementById("quantidade-resultados").textContent = 
+                `${quantidade} ${quantidade === 1 ? "registro" : "registros"}`;
+
+            // Preencher tabela
+            const tbody = document.getElementById("tabela-resultados");
+            tbody.innerHTML = "";
+
+            if (quantidade === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #6b7280;">Nenhum resultado encontrado</td></tr>`;
+            } else {
+                dados.forEach(row => {
+                    const tr = document.createElement("tr");
+
+                    const dataLancamento = formatarData(row.DATA_LANCAMENTO);
+                    const dataVencimento = formatarData(row.DATA_VENCIMENTO);
+                    const dataPagamento = formatarData(row.DATA_PAGAMENTO);
+
+                    tr.innerHTML = `
+                        <td>${row.NUMERO_NF_SAIDA || "-"}</td>
+                        <td>${dataLancamento}</td>
+                        <td>${dataVencimento}</td>
+                        <td>${dataPagamento || "-"}</td>
+                        <td>${row.HISTORICO || "-"}</td>
+                    `;
+
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Mudar de seção
+            secaoBusca.classList.remove("ativa");
+            secaoResultado.classList.add("ativa");
+
+            // Limpar erros
+            document.getElementById("erro-container").innerHTML = "";
+        }
+
+        function formatarData(data) {
+            if (!data) return "-";
+            
+            // Se for string no formato YYYY-MM-DD
+            if (typeof data === 'string') {
+                const [ano, mes, dia] = data.split('-');
+                return `${dia}/${mes}/${ano}`;
+            }
+
+            return data;
+        }
+    </script>
+
+</body>
+
+</html>
